@@ -29,3 +29,20 @@ Read each publisher's fan-content rules — logos are fine on a creator site as 
   Compress with HandBrake (preset "Fast 720p30") or:
   `ffmpeg -i in.mp4 -t 10 -vf scale=1280:-2 -an -crf 28 -movflags +faststart out.mp4`
 - Hero video: 1080p, 10–20 s, no audio, under 8 MB.
+
+## Wallpapers (card backgrounds + hero slideshow)
+
+Save your wallpapers here as JPG with these names. Cards use the first four as
+full-bleed backgrounds (zoom + parallax on hover); the hero cycles through all of them.
+
+| File                | Used for                          |
+|---------------------|-----------------------------------|
+| `freefire.jpg`      | Free Fire card + hero slideshow   |
+| `freefire-2.jpg`    | hero slideshow                    |
+| `pubg.jpg`          | PUBG card + hero slideshow        |
+| `gta-v.jpg`         | GTA V card + hero slideshow       |
+| `gta-6.jpg`         | hero slideshow                    |
+| `gta-6-collage.jpg` | hero slideshow                    |
+| `valorant.jpg`      | Valorant card + hero slideshow    |
+
+Keep each under ~400 KB (1920 px wide, JPG quality 75–80) so the page stays quick.
