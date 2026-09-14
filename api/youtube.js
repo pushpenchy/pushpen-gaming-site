@@ -3,7 +3,7 @@
 //
 // With YOUTUBE_API_KEY set (Vercel → Project → Settings → Environment Variables)
 // it uses the YouTube Data API v3: subscribers, total views, video count, latest videos.
-// Without a key it falls back to the public RSS feed: latest videos only (no channel totals).
+// Without a key it falls back to public pages: RSS feed for latest videos, About page for channel totals.
 
 const CHANNEL_ID = 'UC1w2Fo7Sk-uACEaH51UdThg'; // @PushpenGaming
 const MAX_VIDEOS = 6;
@@ -62,6 +62,34 @@ async function viaDataApi(key) {
   };
 }
 
+// Public channel totals scraped from the About page (no key needed). Returns null on any change in YouTube's markup.
+async function publicStats() {
+  try {
+    const r = await fetch('https://www.youtube.com/channel/' + CHANNEL_ID + '/about', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cookie': 'CONSENT=YES+1; SOCS=CAI'
+      }
+    });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const subs = pick(html, /"subscriberCountText":"([^"]+)"/);
+    const views = pick(html, /"viewCountText":"([^"]+)"/);
+    const vids = pick(html, /"videoCountText":"([^"]+)"/);
+    if (!subs && !views && !vids) return null;
+    return { subscribers: parseCount(subs), views: parseCount(views), videos: parseCount(vids) };
+  } catch (e) { return null; }
+}
+// "454 subscribers" → 454, "1.2K subscribers" → 1200, "10,962 views" → 10962
+function parseCount(s) {
+  if (!s) return null;
+  const m = s.replace(/,/g, '').match(/([\d.]+)\s*([KMB])?/i);
+  if (!m) return null;
+  const mult = { K: 1e3, M: 1e6, B: 1e9 }[(m[2] || '').toUpperCase()] || 1;
+  return Math.round(parseFloat(m[1]) * mult);
+}
+
 async function viaRss() {
   const xml = await getText('https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID);
   const entries = xml.split('<entry>').slice(1);
@@ -76,7 +104,8 @@ async function viaRss() {
       views: viewsMatch ? Number(viewsMatch[1]) : null
     };
   });
-  return { source: 'rss', stats: null, videos: videos };
+  const stats = await publicStats();
+  return { source: 'rss', stats: stats, videos: videos };
 }
 
 async function getJson(url) {
