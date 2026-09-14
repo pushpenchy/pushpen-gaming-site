@@ -20,7 +20,7 @@ assets/           logo, icon, Open Graph banner
 The site calls `/api/youtube` on load and fills in:
 
 - **Latest uploads** grid — works out of the box (uses the channel's public RSS feed).
-  New videos appear automatically within ~10 minutes of upload.
+  New videos and counts refresh automatically every 2 minutes.
 - **Subscribers / videos / total views** tiles — need a free YouTube Data API key:
   1. Open <https://console.cloud.google.com/>, create a project, enable **YouTube Data API v3**.
   2. **Credentials → Create credentials → API key**. Copy it.

@@ -10,7 +10,7 @@ const MAX_VIDEOS = 6;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=600'); // refresh every 2 minutes
   try {
     const key = process.env.YOUTUBE_API_KEY;
     const data = key ? await viaDataApi(key) : await viaRss();
