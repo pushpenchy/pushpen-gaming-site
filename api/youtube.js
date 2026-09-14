@@ -11,6 +11,12 @@ const MAX_VIDEOS = 6;
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300'); // refresh every minute
+  if (req.url && req.url.indexOf('debug=1') > -1) {
+    res.setHeader('Cache-Control', 'no-store');
+    const r = await fetch('https://www.youtube.com/channel/' + CHANNEL_ID + '/live', { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.9', 'Cookie': 'CONSENT=YES+1; SOCS=CAI' } });
+    const html = await r.text();
+    return res.status(200).json({ status: r.status, finalUrl: r.url, len: html.length, title: pick(html, /<title>([^<]*)<\/title>/), canonical: pick(html, /<link rel="canonical" href="([^"]+)"/), isLive: /"isLive":true/.test(html), isLiveNow: /"isLiveNow":true/.test(html), liveId: await liveVideoId() });
+  }
   try {
     const key = process.env.YOUTUBE_API_KEY;
     const data = key ? await viaDataApi(key) : await viaRss();
