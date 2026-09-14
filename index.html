@@ -67,6 +67,19 @@
   .btn svg { width: 18px; height: 18px; }
   @media (max-width: 760px) { .nav-links { display: none; } }
 
+  /* ---------- live banner ---------- */
+  .live-bar { display: none; background: #C8102E; color: #fff; }
+  .live-bar.on { display: block; }
+  .live-bar a { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 20px; color: #fff; font-weight: 700; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .live-bar a:hover { color: #fff; background: #DB1B3B; }
+  .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 0 rgba(255,255,255,0.7); animation: livepulse 1.4s ease-out infinite; }
+  @keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.7); } 100% { box-shadow: 0 0 0 12px rgba(255,255,255,0); } }
+  .live-bar .t { font-weight: 500; letter-spacing: 0.02em; text-transform: none; opacity: .9; max-width: 60ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .live-bar .go { text-decoration: underline; text-underline-offset: 3px; }
+  .thumb .livetag { position: absolute; left: 10px; top: 10px; background: #C8102E; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 9px; letter-spacing: 0.18em; display: inline-flex; align-items: center; gap: 7px; }
+  .thumb .livetag .live-dot { width: 7px; height: 7px; }
+  .thumb .upcoming { position: absolute; left: 10px; top: 10px; background: var(--gold); color: #141416; font-size: 11px; font-weight: 700; padding: 4px 9px; letter-spacing: 0.18em; }
+
   /* ---------- hero ---------- */
   .hero { position: relative; overflow: hidden; padding: 72px 0 96px; border-bottom: 1px solid var(--line); }
   .hero video.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; filter: saturate(1.1) contrast(1.05); }
@@ -279,6 +292,8 @@
     <a class="btn btn-red btn-sm" href="#" data-yt><svg><use href="#i-yt"></use></svg>Subscribe</a>
   </div>
 </header>
+
+<div class="live-bar" id="livebar"><a href="#" target="_blank" rel="noopener"><span class="live-dot"></span><span>Live now</span><span class="t"></span><span class="go">Watch →</span></a></div>
 
 <section class="hero" id="top">
   <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video>
@@ -559,6 +574,11 @@
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function renderYouTube(data) {
+    var bar = document.getElementById('livebar');
+    if (bar) {
+      if (data.live) { bar.querySelector('a').href = 'https://www.youtube.com/watch?v=' + data.live.id; bar.querySelector('.t').textContent = data.live.title; bar.classList.add('on'); document.title = '🔴 LIVE — Pushpen Gaming'; }
+      else { bar.classList.remove('on'); }
+    }
     if (data.stats) {
       var s = data.stats;
       var subs = document.querySelector('[data-stat="subs"]'), vids = document.querySelector('[data-stat="videos"]'), views = document.querySelector('[data-stat="views"]');
@@ -572,7 +592,8 @@
         return '<a class="video reveal in" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener" style="transition-delay:' + (i * 0.08) + 's">' +
           '<div class="thumb" style="background-image:url(' + esc(v.thumb) + ');background-size:cover;background-position:center">' +
           '<div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#F4F1EA"/></svg></div>' +
-          (v.views != null ? '<span class="dur">' + fmt(v.views) + ' views</span>' : '') + '</div>' +
+          (v.live === 'live' ? '<span class="livetag"><span class="live-dot"></span>LIVE</span>' : (v.live === 'upcoming' ? '<span class="upcoming">UPCOMING</span>' : '')) +
+          (v.views != null ? '<span class="dur">' + fmt(v.views) + (v.live === 'live' ? ' watching' : ' views') + '</span>' : '') + '</div>' +
           '<div class="meta"><h3>' + esc(v.title) + '</h3><span class="sub">' + esc(ago(v.published)) + '</span></div></a>';
       }).join('');
       document.querySelectorAll('.video').forEach(function (card) {
@@ -586,7 +607,9 @@
       });
     }
   }
-  fetch('/api/youtube').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) renderYouTube(d); }).catch(function () {});
+  function loadYouTube() { fetch('/api/youtube').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) renderYouTube(d); }).catch(function () {}); }
+  loadYouTube();
+  setInterval(loadYouTube, 120000);
 
   // hero wallpaper slideshow (assets/games/*.jpg) — only images that actually loaded take part
   (function () {

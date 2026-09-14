@@ -32,10 +32,10 @@ async function viaDataApi(key) {
   if (uploads) {
     const pl = await getJson(base + 'playlistItems?part=snippet,contentDetails&maxResults=' + MAX_VIDEOS + '&playlistId=' + uploads + '&key=' + key);
     const ids = (pl.items || []).map(function (it) { return it.contentDetails.videoId; });
-    let viewsById = {};
+    let viewsById = {}, liveById = {};
     if (ids.length) {
-      const vs = await getJson(base + 'videos?part=statistics&id=' + ids.join(',') + '&key=' + key);
-      (vs.items || []).forEach(function (v) { viewsById[v.id] = Number(v.statistics.viewCount); });
+      const vs = await getJson(base + 'videos?part=statistics,snippet&id=' + ids.join(',') + '&key=' + key);
+      (vs.items || []).forEach(function (v) { viewsById[v.id] = Number(v.statistics.viewCount); liveById[v.id] = v.snippet.liveBroadcastContent; });
     }
     videos = (pl.items || []).map(function (it) {
       const sn = it.snippet || {};
@@ -46,13 +46,16 @@ async function viaDataApi(key) {
         title: sn.title,
         published: it.contentDetails.videoPublishedAt || sn.publishedAt,
         thumb: (th.maxres || th.standard || th.high || th.medium || {}).url || ('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg'),
-        views: viewsById[id] != null ? viewsById[id] : null
+        views: viewsById[id] != null ? viewsById[id] : null,
+        live: liveById[id] === 'live' ? 'live' : (liveById[id] === 'upcoming' ? 'upcoming' : null)
       };
     });
   }
 
+  const liveNow = videos.find(function (v) { return v.live === 'live'; }) || null;
   return {
     source: 'api',
+    live: liveNow ? { id: liveNow.id, title: liveNow.title } : null,
     stats: {
       subscribers: st.hiddenSubscriberCount ? null : Number(st.subscriberCount),
       views: Number(st.viewCount),
