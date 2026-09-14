@@ -10,7 +10,7 @@ const MAX_VIDEOS = 6;
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=600'); // refresh every 2 minutes
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300'); // refresh every minute
   try {
     const key = process.env.YOUTUBE_API_KEY;
     const data = key ? await viaDataApi(key) : await viaRss();
@@ -52,7 +52,18 @@ async function viaDataApi(key) {
     });
   }
 
-  const liveNow = videos.find(function (v) { return v.live === 'live'; }) || null;
+  let liveNow = videos.find(function (v) { return v.live === 'live'; }) || null;
+  if (!liveNow) {
+    const lid = await liveVideoId();
+    if (lid) {
+      const lv = await getJson(base + 'videos?part=snippet,statistics,liveStreamingDetails&id=' + lid + '&key=' + key);
+      const it = lv.items && lv.items[0];
+      if (it) {
+        liveNow = { id: lid, title: it.snippet.title, published: it.snippet.publishedAt, thumb: (it.snippet.thumbnails.maxres || it.snippet.thumbnails.high || {}).url || ('https://i.ytimg.com/vi/' + lid + '/hqdefault.jpg'), views: it.liveStreamingDetails && it.liveStreamingDetails.concurrentViewers ? Number(it.liveStreamingDetails.concurrentViewers) : null, live: 'live' };
+        videos = [liveNow].concat(videos.filter(function (v) { return v.id !== lid; }));
+      }
+    }
+  }
   return {
     source: 'api',
     live: liveNow ? { id: liveNow.id, title: liveNow.title } : null,
@@ -63,6 +74,21 @@ async function viaDataApi(key) {
     },
     videos: videos
   };
+}
+
+// Is the channel live right now? youtube.com/channel/<id>/live redirects to the stream when one is public.
+// Costs no API quota. Returns the live video id or null.
+async function liveVideoId() {
+  try {
+    const r = await fetch('https://www.youtube.com/channel/' + CHANNEL_ID + '/live', {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.9', 'Cookie': 'CONSENT=YES+1; SOCS=CAI' }
+    });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const canon = pick(html, new RegExp('<link rel="canonical" href="https://www\\.youtube\\.com/watch\\?v=([A-Za-z0-9_-]{11})"'));
+    if (canon && /"isLive":true|"isLiveNow":true/.test(html)) return canon;
+    return null;
+  } catch (e) { return null; }
 }
 
 // Public channel totals scraped from the About page (no key needed). Returns null on any change in YouTube's markup.
@@ -108,7 +134,15 @@ async function viaRss() {
     };
   });
   const stats = await publicStats();
-  return { source: 'rss', stats: stats, videos: videos };
+  const lid = await liveVideoId();
+  let live = null;
+  if (lid) {
+    const hit = videos.find(function (v) { return v.id === lid; });
+    live = { id: lid, title: hit ? hit.title : 'Live now' };
+    if (hit) hit.live = 'live';
+    else videos.unshift({ id: lid, title: live.title, published: new Date().toISOString(), thumb: 'https://i.ytimg.com/vi/' + lid + '/hqdefault.jpg', views: null, live: 'live' });
+  }
+  return { source: 'rss', live: live, stats: stats, videos: videos };
 }
 
 async function getJson(url) {
