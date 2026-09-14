@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pushpen Gaming — Free Fire, PUBG, GTA V and Valorant gameplay, guides and live streams on YouTube.">
+<meta name="theme-color" content="#141416">
+<link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+<link rel="apple-touch-icon" href="/assets/icon.png">
+<meta property="og:title" content="Pushpen Gaming">
+<meta property="og:description" content="Free Fire, PUBG, GTA V and Valorant — gameplay, guides and live streams.">
+<meta property="og:image" content="/assets/og-banner.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<title>Pushpen Gaming</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #141416;
+    --bg-2: #1B1B1E;
+    --bg-3: #232327;
+    --line: #2C2C31;
+    --ink: #F4F1EA;
+    --ink-2: #B9B5AB;
+    --ink-3: #7E7B74;
+    --red: #C8102E;
+    --red-2: #840B1E;
+    --gold: #D4A24C;
+    --gold-2: #8A6A2B;
+    --display: 'Oswald', 'Arial Narrow', Impact, sans-serif;
+    --body: 'Barlow', 'Segoe UI', Arial, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; overflow-x: hidden; }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { color: #E8C27A; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  img { max-width: 100%; }
+
+  .wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+  .eyebrow { font-family: var(--body); font-weight: 600; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); }
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 0.95; margin: 0; text-wrap: balance; letter-spacing: 0.02em; text-transform: uppercase; }
+  h2 { font-size: clamp(40px, 5.5vw, 68px); }
+  p { margin: 0; }
+  .lede { color: var(--ink-2); max-width: 60ch; font-size: 18px; }
+
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 20; background: rgba(20,20,22,0.82); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); }
+  .brand svg { width: 34px; height: 37px; }
+  .brand span { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: 0.06em; }
+  .brand span b { color: var(--gold); font-weight: 700; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--ink-2); font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; position: relative; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 2px; background: var(--gold); transition: right .25s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { right: 0; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--body); font-weight: 700; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 22px; border-radius: 4px; border: 0; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; color: var(--ink); }
+  .btn-red { background: var(--red); box-shadow: 0 10px 30px rgba(200,16,46,0.28); }
+  .btn-red:hover { background: #DB1B3B; transform: translateY(-2px); box-shadow: 0 16px 36px rgba(200,16,46,0.4); color: var(--ink); }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-2); }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--ink); }
+  .btn-sm { padding: 10px 16px; font-size: 12px; }
+  .btn svg { width: 18px; height: 18px; }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; padding: 72px 0 96px; border-bottom: 1px solid var(--line); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero .band { position: absolute; left: -20%; right: -20%; top: 38%; height: 34%; background: var(--red); opacity: 0.09; transform: rotate(-7deg) scaleX(0); transform-origin: left center; animation: band 1.1s cubic-bezier(.2,.8,.2,1) .15s forwards; }
+  .hero .band-line { position: absolute; left: -20%; right: -20%; top: 72%; height: 3px; background: var(--gold); opacity: 0.35; transform: rotate(-7deg) scaleX(0); transform-origin: left center; animation: band 1.1s cubic-bezier(.2,.8,.2,1) .35s forwards; }
+  @keyframes band { to { transform: rotate(-7deg) scaleX(1); } }
+  .hero .glow { position: absolute; left: 50%; top: 40%; width: 760px; height: 760px; margin-left: -380px; margin-top: -380px; border-radius: 50%; background: radial-gradient(circle, rgba(200,16,46,0.28), rgba(200,16,46,0) 62%); filter: blur(30px); animation: pulse 6s ease-in-out infinite; pointer-events: none; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); opacity: .8; } 50% { transform: scale(1.12); opacity: 1; } }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; }
+  .hero-copy { display: flex; flex-direction: column; gap: 26px; }
+  .hero h1 { font-size: clamp(64px, 10vw, 136px); text-shadow: 0 10px 40px rgba(0,0,0,0.5); display: flex; flex-wrap: wrap; }
+  .hero h1 span { display: inline-block; animation: rise .7s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(40px) skewY(4deg); } to { opacity: 1; transform: none; } }
+  .hero .sub { display: flex; align-items: center; gap: 16px; animation: fade .8s ease .7s both; }
+  .hero .sub .rule { height: 2px; width: 64px; background: var(--gold); }
+  .hero .sub .txt { font-family: var(--display); font-weight: 600; font-size: 26px; letter-spacing: 0.5em; color: var(--gold); }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+  .hero .lede { animation: fade .8s ease .85s both; }
+  .hero .cta { display: flex; gap: 14px; flex-wrap: wrap; animation: fade .8s ease 1s both; }
+  .hero-art { position: relative; display: flex; justify-content: center; }
+  .hero-art .shield { width: min(420px, 80%); filter: drop-shadow(0 40px 60px rgba(0,0,0,0.65)); animation: float 6s ease-in-out infinite, drop .9s cubic-bezier(.2,.8,.2,1) .2s both; }
+  @keyframes float { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-18px) rotate(1.5deg); } }
+  @keyframes drop { from { opacity: 0; transform: translateY(-40px) scale(.92); } to { opacity: 1; } }
+  .hero-art .ring { position: absolute; top: 50%; left: 50%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; border: 1px solid rgba(212,162,76,0.18); animation: spin 40s linear infinite; }
+  .hero-art .ring::before { content: ""; position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 16px var(--gold); }
+  .hero-art .ring.r2 { width: 640px; height: 640px; margin: -320px 0 0 -320px; animation-duration: 70s; animation-direction: reverse; border-color: rgba(255,255,255,0.06); }
+  .hero-art .ring.r2::before { background: var(--red); box-shadow: 0 0 16px var(--red); width: 8px; height: 8px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .hero-art { order: -1; } .hero-art .ring { display: none; } .hero-art .shield { width: 220px; } }
+
+  /* ---------- ticker ---------- */
+  .ticker { background: var(--red); color: var(--ink); overflow: hidden; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(0,0,0,0.3); }
+  .ticker-track { display: flex; width: max-content; animation: ticker 28s linear infinite; }
+  .ticker-track:hover { animation-play-state: paused; }
+  .ticker span { font-family: var(--display); font-weight: 600; font-size: 18px; letter-spacing: 0.22em; text-transform: uppercase; padding: 12px 28px; white-space: nowrap; display: inline-flex; align-items: center; gap: 28px; }
+  .ticker i { display: inline-block; width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  section.block { padding: 104px 0; border-bottom: 1px solid var(--line); }
+  .sec-head { display: flex; flex-direction: column; gap: 14px; margin-bottom: 48px; }
+  .reveal { transform: translateY(28px); transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { transform: none; }
+
+  /* about */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .about .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .about .stat { background: var(--bg-2); padding: 26px 22px; display: flex; flex-direction: column; gap: 6px; }
+  .about .stat b { font-family: var(--display); font-size: 40px; font-weight: 700; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .about .stat span { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .about .stat b em { font-style: normal; color: var(--gold); }
+  .about .right { display: flex; flex-direction: column; gap: 22px; }
+  .about .right p { color: var(--ink-2); }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag { border: 1px solid var(--line); padding: 8px 14px; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); transition: border-color .2s, color .2s; }
+  .tag:hover { border-color: var(--gold); color: var(--ink); }
+  @media (max-width: 900px) { .about { grid-template-columns: 1fr; } }
+
+  /* games */
+  .games { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; perspective: 1200px; }
+  .game { --mx: 50%; --my: 50%; --g1: #C8102E; --g2: #D4A24C; position: relative; display: flex; flex-direction: column; justify-content: flex-end; aspect-ratio: 3 / 4; padding: 26px; background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; color: var(--ink); transform-style: preserve-3d; transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s; isolation: isolate; }
+  .game:hover { border-color: var(--g2); box-shadow: 0 40px 80px rgba(0,0,0,0.55), 0 0 0 1px var(--g2); color: var(--ink); }
+  .game .spot { position: absolute; inset: 0; background: radial-gradient(360px circle at var(--mx) var(--my), color-mix(in srgb, var(--g1) 55%, transparent), transparent 60%); opacity: 0; transition: opacity .4s; z-index: 1; pointer-events: none; }
+  .game:hover .spot { opacity: 1; }
+  .game .art { position: absolute; inset: 0; z-index: 0; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .game:hover .art { transform: scale(1.08) translateY(-10px); }
+  .game .art svg { width: 100%; height: 100%; display: block; }
+  .game .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,20,22,0) 30%, rgba(20,20,22,0.92) 78%); z-index: 2; pointer-events: none; }
+  .game .txt { position: relative; z-index: 3; display: flex; flex-direction: column; gap: 6px; transform: translateY(34px); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+  .game:hover .txt { transform: translateY(0); }
+  .game .txt .kind { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--g2); }
+  .game .txt h3 { font-size: clamp(30px, 3vw, 40px); font-weight: 700; letter-spacing: 0.02em; line-height: .95; }
+  .game .txt .go { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); opacity: 0; transform: translateY(8px); transition: opacity .3s .05s, transform .3s .05s; margin-top: 6px; }
+  .game .txt .go svg { width: 16px; height: 16px; transition: transform .3s; }
+  .game:hover .txt .go { opacity: 1; transform: none; }
+  .game:hover .txt .go svg { transform: translateX(4px); }
+  .game .num { position: absolute; top: 18px; right: 20px; z-index: 3; font-family: var(--display); font-weight: 600; font-size: 14px; letter-spacing: 0.2em; color: var(--ink-3); }
+  .game .edge { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--g1), var(--g2)); transform: scaleX(0); transform-origin: left; transition: transform .45s cubic-bezier(.2,.8,.2,1); z-index: 4; }
+  .game:hover .edge { transform: scaleX(1); }
+  /* per-game art motion */
+  .game.ff .flame { transform-origin: 50% 100%; animation: flick 1.6s ease-in-out infinite alternate; }
+  .game.ff .flame.b { animation-delay: -.6s; }
+  @keyframes flick { from { transform: scaleY(.96) skewX(-2deg); } to { transform: scaleY(1.06) skewX(3deg); } }
+  .game.pubg .cross { transform-origin: center; transition: transform 1.2s cubic-bezier(.2,.8,.2,1); }
+  .game.pubg:hover .cross { transform: rotate(90deg) scale(1.06); }
+  .game.pubg .ring-dash { stroke-dasharray: 6 8; animation: dash 6s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -140; } }
+  .game.gta .sun { transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .game.gta:hover .sun { transform: translateY(-16px); }
+  .game.gta .city { transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .game.gta:hover .city { transform: translateY(6px); }
+  .game.val .chev { transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .game.val:hover .chev.a { transform: translate(-14px, -10px); }
+  .game.val:hover .chev.b { transform: translate(14px, 10px); }
+  @media (max-width: 1000px) { .games { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .games { grid-template-columns: 1fr; } .game { aspect-ratio: 4 / 3; } }
+
+  /* videos */
+  .videos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .video { background: var(--bg-2); border: 1px solid var(--line); overflow: hidden; display: flex; flex-direction: column; transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s; transform-style: preserve-3d; }
+  .video:hover { border-color: var(--gold-2); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+  .thumb { position: relative; aspect-ratio: 16 / 9; background: linear-gradient(135deg, #2A1016 0%, #141416 55%, #1B1B1E 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .thumb::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 28px 28px; }
+  .thumb[style]::before { display: none; }
+  .thumb svg.mark { width: 26%; opacity: .9; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+  .video:hover .thumb svg.mark { transform: scale(1.08); }
+  .thumb .play { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(.7); transition: opacity .3s, transform .3s; box-shadow: 0 10px 30px rgba(200,16,46,0.5); }
+  .thumb .play svg { width: 22px; height: 22px; margin-left: 3px; }
+  .video:hover .play { opacity: 1; transform: scale(1); }
+  .thumb .dur { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,0.75); font-size: 12px; font-weight: 700; padding: 3px 7px; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+  .thumb .sample { position: absolute; left: 10px; top: 10px; background: var(--gold); color: #141416; font-size: 10px; font-weight: 700; padding: 3px 8px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .video .meta { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 8px; }
+  .video h3 { font-size: 24px; font-weight: 600; letter-spacing: 0.02em; color: var(--ink); transition: color .2s; }
+  .video:hover h3 { color: var(--gold); }
+  .video .sub { font-size: 13px; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+  @media (max-width: 900px) { .videos { grid-template-columns: 1fr; } }
+
+  /* socials */
+  .socials { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .social { display: flex; align-items: center; gap: 16px; padding: 22px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink); transition: transform .25s cubic-bezier(.2,.8,.2,1), border-color .25s; }
+  .social:hover { transform: translateY(-4px); border-color: var(--gold); color: var(--ink); }
+  .social .ic { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .social .ic svg { width: 26px; height: 26px; }
+  .social .ic.yt { background: var(--red); }
+  .social .lbl { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .social .lbl span { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .social .lbl b { font-weight: 600; font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 900px) { .socials { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .socials { grid-template-columns: 1fr; } }
+
+  /* subscribe */
+  .subscribe { position: relative; overflow: hidden; text-align: center; padding: 120px 0; }
+  .subscribe .band { position: absolute; left: -20%; right: -20%; top: 30%; height: 40%; background: var(--red); opacity: .10; transform: rotate(-7deg); }
+  .subscribe .inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+  .subscribe h2 { font-size: clamp(48px, 8vw, 110px); }
+  .subscribe h2 em { font-style: normal; color: var(--gold); }
+  .subscribe .lede { text-align: center; }
+
+  /* footer */
+  footer { padding: 36px 0; color: var(--ink-3); font-size: 13px; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+  footer .brand span { font-size: 18px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .reveal { transform: none; }
+    .hero .band, .hero .band-line { transform: rotate(-7deg) scaleX(1); }
+    .hero h1 span, .hero-art .shield, .hero .sub, .hero .lede, .hero .cta { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 200 220">
+      <path d="M100 6 L186 30 V108 C186 158 144 198 100 214 C56 198 14 158 14 108 V30 Z" fill="#D4A24C"></path>
+      <path d="M100 12 L180 34 V108 C180 154 140 191 100 207 C60 191 20 154 20 108 V34 Z" fill="#8A6A2B"></path>
+      <path d="M100 18 L174 38 V108 C174 150 137 184 100 199 C63 184 26 150 26 108 V38 Z" fill="#C8102E"></path>
+      <path d="M100 18 L174 38 V96 L100 118 L26 96 V38 Z" fill="#FFFFFF" fill-opacity="0.08"></path>
+      <path d="M26 118 L100 140 L174 118 V108 C174 150 137 184 100 199 C63 184 26 150 26 108 Z" fill="#840B1E"></path>
+      <path d="M66 50 H126 A32 32 0 0 1 126 114 H92 V136 L79 166 L66 136 Z M92 70 V94 H124 A12 12 0 0 0 124 70 Z" fill="#F4F1EA" fill-rule="evenodd"></path>
+      <line x1="79" y1="166" x2="79" y2="136" stroke="#840B1E" stroke-width="4" stroke-linecap="round"></line>
+      <polygon points="70,176 130,176 124,184 76,184" fill="#D4A24C"></polygon>
+    </symbol>
+    <symbol id="i-yt" viewBox="0 0 24 24"><path d="M23 7.2c-.3-1-1-1.8-2-2C19.2 4.7 12 4.7 12 4.7s-7.2 0-9 .5c-1 .3-1.8 1-2 2C.5 9 .5 12 .5 12s0 3 .5 4.8c.3 1 1 1.8 2 2 1.8.5 9 .5 9 .5s7.2 0 9-.5c1-.3 1.8-1 2-2 .5-1.8.5-4.8.5-4.8s0-3-.5-4.8zM9.8 15.1V8.9l6 3.1-6 3.1z" fill="#F4F1EA"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.5V14h2.7v8h3.3z" fill="#141416"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M17.5 3h3l-6.8 7.8L21.8 21h-6.2l-4.9-6.4L5.1 21h-3l7.3-8.3L1.8 3h6.4l4.4 5.8L17.5 3zm-1.1 16.2h1.7L7 4.7H5.2l11.2 14.5z" fill="#141416"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="#141416" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Pushpen Gaming home">
+      <svg><use href="#mark"></use></svg>
+      <span>PUSHPEN <b>GAMING</b></span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#games">Games</a>
+      <a href="#videos">Videos</a>
+      <a href="#socials">Socials</a>
+    </nav>
+    <a class="btn btn-red btn-sm" href="#" data-yt><svg><use href="#i-yt"></use></svg>Subscribe</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <canvas id="embers" aria-hidden="true"></canvas>
+  <div class="band"></div>
+  <div class="band-line"></div>
+  <div class="glow"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow" style="animation: fade .8s ease .5s both;">Gaming channel · New videos every week</p>
+      <h1 aria-label="Pushpen"><span style="animation-delay:.05s">P</span><span style="animation-delay:.11s">U</span><span style="animation-delay:.17s">S</span><span style="animation-delay:.23s">H</span><span style="animation-delay:.29s">P</span><span style="animation-delay:.35s">E</span><span style="animation-delay:.41s">N</span></h1>
+      <div class="sub"><div class="rule"></div><div class="txt">GAMING</div></div>
+      <p class="lede">Gameplay, guides and live streams from Pushpen. Pull up a chair, hit subscribe, and play along.</p>
+      <div class="cta">
+        <a class="btn btn-red" href="#" data-yt><svg><use href="#i-yt"></use></svg>Subscribe on YouTube</a>
+        <a class="btn btn-ghost" href="#videos">Watch latest</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="ring"></div>
+      <div class="ring r2"></div>
+      <svg class="shield" viewBox="0 0 200 220" role="img" aria-label="Pushpen Gaming shield"><use href="#mark"></use></svg>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Free Fire <i></i></span><span>PUBG <i></i></span><span>GTA V <i></i></span><span>Valorant <i></i></span><span>Live streams <i></i></span><span>Pushpen Gaming <i></i></span><span>New videos every week <i></i></span>
+    <span>Free Fire <i></i></span><span>PUBG <i></i></span><span>GTA V <i></i></span><span>Valorant <i></i></span><span>Live streams <i></i></span><span>Pushpen Gaming <i></i></span><span>New videos every week <i></i></span>
+  </div>
+</div>
+
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">About the channel</p>
+      <h2>Built for people who actually play</h2>
+    </div>
+    <div class="about">
+      <div class="stats reveal">
+        <div class="stat"><b data-stat="subs">—</b><span>Subscribers</span></div>
+        <div class="stat"><b data-stat="videos">—</b><span>Videos</span></div>
+        <div class="stat"><b data-stat="views">—</b><span>Total views</span></div>
+      </div>
+      <div class="right reveal">
+        <p>Pushpen Gaming is where the grind gets recorded — full playthroughs, no-nonsense guides that get you past the part you're stuck on, and live streams where chat calls the shots.</p>
+        <p>Every video is cut to respect your time: straight into the action, timestamps on everything, and the good moments left in.</p>
+        <div class="tags">
+          <span class="tag">Playthroughs</span><span class="tag">Guides</span><span class="tag">Live streams</span><span class="tag">Highlights</span><span class="tag">Community games</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="games">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">What we play</p>
+      <h2>Four games. Zero mercy.</h2>
+    </div>
+    <div class="games">
+      <a class="game ff reveal" href="https://www.youtube.com/@PushpenGaming/search?query=free+fire" target="_blank" rel="noopener" style="--g1:#FF5A1F; --g2:#FFB020;">
+        <div class="art"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#1E1210"></rect>
+          <circle cx="150" cy="250" r="150" fill="#FF5A1F" fill-opacity="0.12"></circle>
+          <path class="flame" d="M150 340 C85 315 70 235 125 185 C118 235 150 245 148 205 C146 165 115 150 152 95 C165 150 205 160 195 220 C222 200 212 170 205 160 C245 205 235 310 150 340 Z" fill="#FF5A1F"></path>
+          <path class="flame b" d="M150 335 C110 315 105 265 135 235 C132 262 152 268 152 245 C152 222 138 214 155 185 C162 215 185 222 180 258 C196 245 190 230 187 224 C210 250 205 312 150 335 Z" fill="#FFB020"></path>
+          <path class="flame" d="M150 330 C130 318 128 290 143 275 C142 290 152 292 152 280 C152 268 146 264 154 250 C158 266 170 270 168 288 C176 282 173 274 172 270 C184 285 180 318 150 330 Z" fill="#FFF3C4"></path>
+        </svg></div>
+        <div class="spot"></div><div class="shade"></div>
+        <span class="num">01</span>
+        <div class="txt"><span class="kind">Battle royale · Mobile</span><h3>Free Fire</h3><span class="go">Watch videos <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="edge"></div>
+      </a>
+      <a class="game pubg reveal" href="https://www.youtube.com/@PushpenGaming/search?query=pubg" target="_blank" rel="noopener" style="--g1:#E8B62C; --g2:#F7E2A0; transition-delay:.06s;">
+        <div class="art"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#1A1710"></rect>
+          <g class="cross" style="transform-box: fill-box;">
+            <circle cx="150" cy="200" r="118" fill="none" stroke="#E8B62C" stroke-width="2" class="ring-dash"></circle>
+            <circle cx="150" cy="200" r="86" fill="none" stroke="#E8B62C" stroke-width="10" stroke-opacity="0.9"></circle>
+            <circle cx="150" cy="200" r="40" fill="none" stroke="#E8B62C" stroke-width="3"></circle>
+            <path d="M150 60 V125 M150 275 V340 M10 200 H75 M225 200 H290" stroke="#E8B62C" stroke-width="10" stroke-linecap="round"></path>
+            <circle cx="150" cy="200" r="7" fill="#F7E2A0"></circle>
+          </g>
+        </svg></div>
+        <div class="spot"></div><div class="shade"></div>
+        <span class="num">02</span>
+        <div class="txt"><span class="kind">Battle royale</span><h3>PUBG</h3><span class="go">Watch videos <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="edge"></div>
+      </a>
+      <a class="game gta reveal" href="https://www.youtube.com/@PushpenGaming/search?query=gta+v" target="_blank" rel="noopener" style="--g1:#FF6FB5; --g2:#2FD1C8; transition-delay:.12s;">
+        <div class="art"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="gtaSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A0F3A"/><stop offset="0.55" stop-color="#8A1E6E"/><stop offset="1" stop-color="#FF7A3D"/></linearGradient>
+          <linearGradient id="gtaSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD166"/><stop offset="1" stop-color="#FF6FB5"/></linearGradient></defs>
+          <rect width="300" height="400" fill="url(#gtaSky)"></rect>
+          <g class="sun">
+            <circle cx="150" cy="200" r="88" fill="url(#gtaSun)"></circle>
+            <rect x="60" y="205" width="180" height="8" fill="#2A0F3A"></rect><rect x="60" y="226" width="180" height="11" fill="#2A0F3A"></rect><rect x="60" y="252" width="180" height="14" fill="#2A0F3A"></rect>
+          </g>
+          <g class="city" fill="#120A18">
+            <rect x="0" y="300" width="300" height="100"></rect>
+            <rect x="14" y="250" width="26" height="60"></rect><rect x="48" y="222" width="34" height="90"></rect><rect x="92" y="262" width="20" height="50"></rect><rect x="120" y="205" width="40" height="110"></rect><rect x="170" y="240" width="22" height="70"></rect><rect x="200" y="215" width="36" height="100"></rect><rect x="246" y="255" width="44" height="60"></rect>
+            <rect x="134" y="188" width="12" height="20"></rect>
+          </g>
+          <g fill="#2FD1C8" fill-opacity="0.9"><rect x="54" y="232" width="4" height="4"/><rect x="66" y="246" width="4" height="4"/><rect x="128" y="218" width="4" height="4"/><rect x="146" y="240" width="4" height="4"/><rect x="208" y="228" width="4" height="4"/><rect x="222" y="252" width="4" height="4"/></g>
+        </svg></div>
+        <div class="spot"></div><div class="shade"></div>
+        <span class="num">03</span>
+        <div class="txt"><span class="kind">Open world</span><h3>GTA V</h3><span class="go">Watch videos <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="edge"></div>
+      </a>
+      <a class="game val reveal" href="https://www.youtube.com/@PushpenGaming/search?query=valorant" target="_blank" rel="noopener" style="--g1:#FF4655; --g2:#F4F1EA; transition-delay:.18s;">
+        <div class="art"><svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="#101418"></rect>
+          <path d="M0 0 H300 V400 Z" fill="#FF4655" fill-opacity="0.08"></path>
+          <g class="chev a"><path d="M40 120 L150 40 L260 120 L260 165 L150 85 L40 165 Z" fill="#FF4655"></path></g>
+          <g class="chev b"><path d="M40 230 L150 150 L260 230 L260 275 L150 195 L40 275 Z" fill="#F4F1EA"></path></g>
+          <path d="M40 340 L150 260 L260 340 L260 385 L150 305 L40 385 Z" fill="#FF4655" fill-opacity="0.35"></path>
+        </svg></div>
+        <div class="spot"></div><div class="shade"></div>
+        <span class="num">04</span>
+        <div class="txt"><span class="kind">Tactical shooter</span><h3>Valorant</h3><span class="go">Watch videos <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="edge"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="videos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Latest uploads</p>
+      <h2>Fresh off the capture card</h2>
+    </div>
+    <div class="videos">
+      <a class="video reveal" href="#" data-yt>
+        <div class="thumb"><span class="sample">Sample</span><svg class="mark"><use href="#mark"></use></svg><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#F4F1EA"/></svg></div><span class="dur">18:42</span></div>
+        <div class="meta"><h3>[Video title goes here]</h3><span class="sub">Playthrough · Part 1</span></div>
+      </a>
+      <a class="video reveal" href="#" data-yt style="transition-delay:.08s">
+        <div class="thumb"><span class="sample">Sample</span><svg class="mark"><use href="#mark"></use></svg><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#F4F1EA"/></svg></div><span class="dur">09:15</span></div>
+        <div class="meta"><h3>[Video title goes here]</h3><span class="sub">Guide</span></div>
+      </a>
+      <a class="video reveal" href="#" data-yt style="transition-delay:.16s">
+        <div class="thumb"><span class="sample">Sample</span><svg class="mark"><use href="#mark"></use></svg><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#F4F1EA"/></svg></div><span class="dur">2:04:30</span></div>
+        <div class="meta"><h3>[Video title goes here]</h3><span class="sub">Live stream replay</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="socials">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Follow the brand</p>
+      <h2>Find Pushpen everywhere</h2>
+    </div>
+    <div class="socials">
+      <a class="social reveal" href="#" data-yt><div class="ic yt"><svg><use href="#i-yt"></use></svg></div><div class="lbl"><span>YouTube</span><b>@PushpenGaming</b></div></a>
+      <a class="social reveal" href="#" data-fb style="transition-delay:.06s"><div class="ic"><svg><use href="#i-fb"></use></svg></div><div class="lbl"><span>Facebook</span><b>@pushpengaming</b></div></a>
+      <a class="social reveal" href="#" data-x style="transition-delay:.12s"><div class="ic"><svg><use href="#i-x"></use></svg></div><div class="lbl"><span>X / Twitter</span><b>@pushpengaming</b></div></a>
+      <a class="social reveal" href="#" data-ig style="transition-delay:.18s"><div class="ic"><svg><use href="#i-ig"></use></svg></div><div class="lbl"><span>Instagram</span><b>@pushpengaming</b></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe">
+  <div class="band"></div>
+  <div class="wrap inner reveal">
+    <p class="eyebrow">Join the squad</p>
+    <h2>Push <em>play.</em><br>Push subscribe.</h2>
+    <p class="lede">One click and you'll never miss an upload or a stream.</p>
+    <a class="btn btn-red" href="#" data-yt><svg><use href="#i-yt"></use></svg>Subscribe on YouTube</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><svg><use href="#mark"></use></svg><span>PUSHPEN <b>GAMING</b></span></a>
+    <span>© <span id="year"></span> Pushpen Gaming. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  // ---- replace this with your real channel link ----
+  var YT_URL = 'https://www.youtube.com/@PushpenGaming';
+  var FB_URL = '';   // e.g. https://www.facebook.com/yourpage
+  var IG_URL = '';   // e.g. https://www.instagram.com/yourhandle
+  var X_URL  = '';   // e.g. https://x.com/yourhandle
+  [['fb', FB_URL], ['ig', IG_URL], ['x', X_URL]].forEach(function (p) { var a = document.querySelector('[data-' + p[0] + ']'); if (a && p[1]) { a.href = p[1]; a.target = '_blank'; a.rel = 'noopener'; } });
+  document.querySelectorAll('[data-yt]').forEach(function (a) {
+    if (YT_URL) { a.href = YT_URL; a.target = '_blank'; a.rel = 'noopener'; }
+  });
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // scroll reveal (elements are visible-at-rest via CSS fallback once JS adds .in)
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  }
+  // anything already in view on load shows immediately
+  reveals.forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < window.innerHeight) el.classList.add('in'); });
+
+  // 3D tilt on video cards
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    document.querySelectorAll('.video').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = 'translateY(-6px) rotateX(' + (-y * 6) + 'deg) rotateY(' + (x * 8) + 'deg)';
+      });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+    });
+  }
+
+  // game cards: cursor spotlight + tilt
+  document.querySelectorAll('.game').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', (px * 100) + '%');
+      card.style.setProperty('--my', (py * 100) + '%');
+      if (!reduce) card.style.transform = 'translateY(-8px) rotateX(' + ((0.5 - py) * 8) + 'deg) rotateY(' + ((px - 0.5) * 10) + 'deg)';
+    });
+    card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+  });
+
+  // ---- live YouTube data (served by /api/youtube when hosted on Vercel) ----
+  function fmt(n) {
+    n = Number(n); if (!isFinite(n)) return '—';
+    if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, '') + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+  function ago(iso) {
+    var d = (Date.now() - new Date(iso).getTime()) / 864e5;
+    if (d < 1) return 'Today'; if (d < 2) return 'Yesterday'; if (d < 30) return Math.floor(d) + ' days ago';
+    if (d < 365) return Math.floor(d / 30) + ' months ago'; return Math.floor(d / 365) + ' years ago';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function renderYouTube(data) {
+    if (data.stats) {
+      var s = data.stats;
+      var subs = document.querySelector('[data-stat="subs"]'), vids = document.querySelector('[data-stat="videos"]'), views = document.querySelector('[data-stat="views"]');
+      if (subs && s.subscribers != null) subs.textContent = fmt(s.subscribers);
+      if (vids && s.videos != null) vids.textContent = fmt(s.videos);
+      if (views && s.views != null) views.textContent = fmt(s.views);
+    }
+    if (data.videos && data.videos.length) {
+      var grid = document.querySelector('.videos');
+      grid.innerHTML = data.videos.slice(0, 6).map(function (v, i) {
+        return '<a class="video reveal in" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener" style="transition-delay:' + (i * 0.08) + 's">' +
+          '<div class="thumb" style="background-image:url(' + esc(v.thumb) + ');background-size:cover;background-position:center">' +
+          '<div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#F4F1EA"/></svg></div>' +
+          (v.views != null ? '<span class="dur">' + fmt(v.views) + ' views</span>' : '') + '</div>' +
+          '<div class="meta"><h3>' + esc(v.title) + '</h3><span class="sub">' + esc(ago(v.published)) + '</span></div></a>';
+      }).join('');
+      document.querySelectorAll('.video').forEach(function (card) {
+        if (reduce) return;
+        card.addEventListener('mousemove', function (e) {
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = 'translateY(-6px) rotateX(' + (-y * 6) + 'deg) rotateY(' + (x * 8) + 'deg)';
+        });
+        card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+      });
+    }
+  }
+  fetch('/api/youtube').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) { if (d) renderYouTube(d); }).catch(function () {});
+
+  // ember particles in the hero
+  (function () {
+    var c = document.getElementById('embers'); if (!c || reduce) return;
+    var ctx = c.getContext('2d'), w, h, parts = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function size() { var r = c.getBoundingClientRect(); w = r.width; h = r.height; c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+    function make() { return { x: Math.random() * w, y: h + Math.random() * 40, r: 0.8 + Math.random() * 1.8, s: 0.25 + Math.random() * 0.6, d: (Math.random() - 0.5) * 0.3, a: 0.2 + Math.random() * 0.5, g: Math.random() < 0.35 }; }
+    size(); window.addEventListener('resize', size);
+    for (var i = 0; i < 70; i++) { var p = make(); p.y = Math.random() * h; parts.push(p); }
+    function tick() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i]; p.y -= p.s; p.x += p.d;
+        if (p.y < -10) parts[i] = make();
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.g ? 'rgba(212,162,76,' + p.a + ')' : 'rgba(200,16,46,' + p.a + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  })();
+</script>
+
+</body>
+</html>

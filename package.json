@@ -1,0 +1,7 @@
+{
+  "name": "pushpen-gaming-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brand website for the Pushpen Gaming YouTube channel",
+  "engines": { "node": ">=18" }
+}
